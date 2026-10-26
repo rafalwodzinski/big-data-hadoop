@@ -38,6 +38,7 @@ wheels/
 *.env.*
 atlas-credentials.env
 !.env.example
+!hadoop.env
 .DS_Store
 .idea/
 .vscode/
