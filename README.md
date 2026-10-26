@@ -5,16 +5,21 @@ Projekt przetwarzania dużych zbiorów danych (dane stacji pogodowych GSOD) z wy
 ## Środowisko uruchomieniowe
 
 ### 1. Środowisko Conda (Python)
-Środowisko zostało skonfigurowane z Pythonem 3.11 i pakietami `pymongo`, `pandas`, `requests`, `beautifulsoup4`, `hdfs`.
+Konfiguracja środowiska zdefiniowana jest w pliku `environment.yml` (Python 3.11, `pymongo`, `pandas`, `requests`, `beautifulsoup4`, `hdfs`).
+
+Odtworzenie środowiska od zera:
+```bash
+conda env create -f environment.yml
+```
 
 Aktywacja:
 ```bash
 conda activate bigdata_hadoop
 ```
 
-W przypadku instalacji dodatkowych bibliotek:
+Aktualizacja pakietów po zmianach w `environment.yml`:
 ```bash
-pip install -r requirements.txt
+conda env update -f environment.yml --prune
 ```
 
 ---

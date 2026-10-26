@@ -1,0 +1,14 @@
+name: bigdata_hadoop
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pymongo>=4.6
+  - pandas>=2.0
+  - requests>=2.31
+  - beautifulsoup4>=4.12
+  - python-dotenv>=1.0
+  - pip
+  - pip:
+      - hdfs>=2.7.0
