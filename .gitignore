@@ -1,0 +1,42 @@
+# Large datasets
+archive/
+*.tar.gz
+*.csv.gz
+*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment & IDE
+.env
+.DS_Store
+.idea/
+.vscode/
+
+# Hadoop & Mongo local volumes/exports (if any created locally)
+*.log
