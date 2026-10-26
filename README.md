@@ -43,11 +43,23 @@ docker ps
 
 ---
 
-### 3. Interfejsy Webowe
+### 3. Interfejsy Webowe i Bazy Danych
 - **Hadoop NameNode (HDFS UI):** [http://localhost:9870](http://localhost:9870)
 - **Hadoop YARN ResourceManager:** [http://localhost:8088](http://localhost:8088)
 - **Hadoop HistoryServer:** [http://localhost:8188](http://localhost:8188)
-- **MongoDB:** `localhost:27017`
+- **MongoDB Lokalne:** `localhost:27017`
+- **MongoDB Atlas (Chmura):** `mongodb+srv://...`
+
+### 4. Test połączenia baz danych (Lokalne + Atlas)
+Skrypt `db_test.py` weryfikuje szyfrowane połączenie i wyświetla kolekcje:
+```bash
+# 1. Skonfiguruj plik .env na podstawie .env.example
+cp .env.example .env
+# Uzupełnij MONGO_ATLAS_URI w pliku .env
+
+# 2. Uruchom test
+python db_test.py
+```
 
 ---
 

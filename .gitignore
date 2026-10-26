@@ -32,8 +32,12 @@ wheels/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Environment & IDE
+# Environment & Secrets
 .env
+*.env
+*.env.*
+atlas-credentials.env
+!.env.example
 .DS_Store
 .idea/
 .vscode/
