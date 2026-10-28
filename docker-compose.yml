@@ -11,6 +11,7 @@ services:
       - "9000:9000"
     volumes:
       - hadoop_namenode:/hadoop/dfs/name
+      - ./:/workspace
     environment:
       - CLUSTER_NAME=hadoop-cluster
     env_file:

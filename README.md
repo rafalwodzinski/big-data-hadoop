@@ -63,14 +63,36 @@ python db_test.py
 
 ---
 
-### 4. Podstawowe komendy HDFS
+### 5. Przygotowanie i załadowanie danych GSOD do HDFS (`prepare_hdfs_data.py`)
+
+Skrypt `prepare_hdfs_data.py` strumieniowo rozpakowuje archiwa roczne `.tar` i zagnieżdżone w nich pliki `.op.gz` (z wykorzystaniem `tarfile.extractfile()` oraz wrappera `gzip.GzipFile` bez ładowania danych do pamięci RAM), odfiltrowuje zduplikowane nagłówki `STN---`, zapisuje zbiorczy plik `gsod_full.csv` (> 5.0 GB) na dysk i przesyła go do HDFS (`/data/`):
+
+```bash
+conda activate bigdata_hadoop
+python prepare_hdfs_data.py
+```
+
+Weryfikacja rozmiaru załadowanego pliku w HDFS (Definition of Done):
+```bash
+docker exec namenode hdfs dfs -du -h /data/
+```
+
+---
+
+### 6. Podstawowe komendy HDFS
 
 Wykonywanie poleceń wewnątrz kontenera `namenode`:
 ```bash
 # Utworzenie katalogu w HDFS
-docker exec namenode hdfs dfs -mkdir -p /dane
+docker exec namenode hdfs dfs -mkdir -p /data
 
-# Wyświetlenie zawartości katalogu
+# Wysłanie pliku z zamontowanego katalogu roboczego (/workspace) do HDFS
+docker exec -w /workspace namenode hdfs dfs -put gsod_full.csv /data/
+
+# Sprawdzenie rozmiaru plików w katalogu /data/
+docker exec namenode hdfs dfs -du -h /data/
+
+# Wyświetlenie zawartości katalogu głównego
 docker exec namenode hdfs dfs -ls /
 
 # Raport klastra i DataNode
