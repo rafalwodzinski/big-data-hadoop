@@ -79,7 +79,23 @@ docker exec namenode hdfs dfs -du -h /data/
 
 ---
 
-### 6. Podstawowe komendy HDFS
+### 6. Scraping metadanych stacji meteorologicznych WMO/NOAA (`scraper.py`)
+
+Skrypt `scraper.py` pobiera tabele HTML stacji meteorologicznych WMO z otwartego katalogu (Ogimet / WMO) przy użyciu `requests` i `BeautifulSoup` (wyszukiwanie `<table>` i `<tr>`), wzbogaca je o powiązania z kodami NOAA GSOD (`station_id`) i zapisuje masowo (`bulk_write` + `UpdateOne(..., upsert=True)`) do kolekcji `stations` w lokalnym MongoDB oraz w chmurze MongoDB Atlas:
+
+```bash
+conda activate bigdata_hadoop
+
+# Pojedyncze uruchomienie
+python scraper.py
+
+# Trzykrotne uruchomienie weryfikujące brak duplikatów (Definition of Done)
+python scraper.py --runs 3
+```
+
+---
+
+### 7. Podstawowe komendy HDFS
 
 Wykonywanie poleceń wewnątrz kontenera `namenode`:
 ```bash
