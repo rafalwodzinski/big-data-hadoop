@@ -95,7 +95,21 @@ python scraper.py --runs 3
 
 ---
 
-### 7. Podstawowe komendy HDFS
+### 7. Przetwarzanie strumieniowe MapReduce (`mapper.py` & `reducer.py`)
+
+Skrypty `mapper.py` oraz `reducer.py` realizują logikę czyszczenia danych i obliczania 3 analiz statystycznych (temperatura, wiatr, opady) w architekturze Hadoop Streaming bez ładowania całych plików do pamięci RAM (`for line in sys.stdin:` oraz grupowanie po `current_key`):
+
+```bash
+# Utworzenie próbki testowej (1000 wierszy) z gsod_full.csv
+head -n 1000 gsod_full.csv > sample.csv
+
+# Lokalny test potoku Map -> Shuffle & Sort -> Reduce (Definition of Done)
+cat sample.csv | python3 mapper.py | sort | python3 reducer.py
+```
+
+---
+
+### 8. Podstawowe komendy HDFS
 
 Wykonywanie poleceń wewnątrz kontenera `namenode`:
 ```bash
