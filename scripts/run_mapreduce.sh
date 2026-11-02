@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
-# run_mapreduce.sh - Uruchomienie zadania MapReduce (Hadoop Streaming) na klastrze YARN
+# scripts/run_mapreduce.sh - Uruchomienie zadania MapReduce (Hadoop Streaming) na klastrze YARN
 # dla 5.5-gigabajtowego zbioru danych w HDFS (/data/gsod_full.csv) oraz pobranie
-# wyniku do pliku results.tsv na maszynę hosta.
+# wyniku do pliku data/output/results.tsv na maszynę hosta.
 
 set -euo pipefail
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$PROJECT_ROOT"
 
 echo "[*] 1. Sprawdzanie środowiska Python 3 w kontenerach Hadoop (namenode i nodemanager)..."
 for container in namenode nodemanager; do
@@ -23,16 +26,16 @@ docker exec -w /workspace namenode bash -c "
 
 echo "[*] 3. Uruchamianie zadania Hadoop Streaming MapReduce dla katalogu /data/..."
 docker exec -w /workspace namenode hadoop jar /opt/hadoop-3.2.1/hadoop-streaming.jar \
-    -files mapper.py,reducer.py \
+    -files src/mapreduce/mapper.py,src/mapreduce/reducer.py \
     -input /data/ \
     -output /output \
     -mapper "python3 mapper.py" \
     -reducer "python3 reducer.py"
 
-echo "[*] 4. Pobieranie wyniku z HDFS (/output/part-00000) do pliku results.tsv..."
-docker exec -w /workspace namenode hdfs dfs -get -f /output/part-00000 results.tsv
+echo "[*] 4. Pobieranie wyniku z HDFS (/output/part-00000) do pliku data/output/results.tsv..."
+mkdir -p data/output
+docker exec -w /workspace namenode hdfs dfs -get -f /output/part-00000 data/output/results.tsv
 
-echo "[+] SUKCES! Zadanie MapReduce zakończone, a plik results.tsv zapisany na dysku hosta:"
-ls -lh results.tsv
-head -n 5 results.tsv
-
+echo "[+] SUKCES! Zadanie MapReduce zakończone, a plik data/output/results.tsv zapisany na dysku hosta:"
+ls -lh data/output/results.tsv
+head -n 5 data/output/results.tsv

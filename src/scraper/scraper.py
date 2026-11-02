@@ -29,8 +29,10 @@ from dotenv import load_dotenv
 from pymongo import ASCENDING, MongoClient, UpdateOne
 from pymongo.errors import PyMongoError
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 # Wczytanie zmiennych środowiskowych z pliku .env
-load_dotenv()
+load_dotenv(PROJECT_ROOT / ".env")
 
 MONGO_LOCAL_URI = os.getenv("MONGO_LOCAL_URI", "mongodb://localhost:27017/")
 MONGO_LOCAL_DB = os.getenv("MONGO_LOCAL_DB", "bigdata_local")
@@ -318,8 +320,8 @@ def main() -> None:
             # 2. Wzbogacenie o powiązania z kodami NOAA GSOD (jeśli plik isd-history.csv jest dostępny)
             stations = enrich_with_local_noaa_isd(
                 stations,
-                isd_csv_path=Path("archive/isd-history.csv"),
-                country_txt_path=Path("archive/country-list.txt"),
+                isd_csv_path=PROJECT_ROOT / "archive/isd-history.csv",
+                country_txt_path=PROJECT_ROOT / "archive/country-list.txt",
             )
 
             # 3. Masowy zapis (bulk_write + UpdateOne z upsert=True) do lokalnego MongoDB

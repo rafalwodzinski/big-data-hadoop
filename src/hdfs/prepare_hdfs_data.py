@@ -27,10 +27,13 @@ import time
 import zipfile
 from pathlib import Path
 
+# Wyznaczenie katalogu głównego projektu (big-data-hadoop/)
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 # Domyślne ścieżki i parametry
-DEFAULT_ZIP_PATH = Path("archive/gsod_all_years.zip")
-DEFAULT_ARCHIVE_DIR = Path("archive/gsod_all_years")
-DEFAULT_OUTPUT_FILE = Path("gsod_full.csv")
+DEFAULT_ZIP_PATH = PROJECT_ROOT / "archive/gsod_all_years.zip"
+DEFAULT_ARCHIVE_DIR = PROJECT_ROOT / "archive/gsod_all_years"
+DEFAULT_OUTPUT_FILE = PROJECT_ROOT / "data/gsod_full.csv"
 DEFAULT_HDFS_DIR = "/data/"
 DEFAULT_TARGET_GB = 5.5  # Docelowy rozmiar w GiB (> 5.0 GB dla spełnienia DoD)
 HEADER_PREFIX = b"STN---"
@@ -249,14 +252,19 @@ def upload_to_hdfs(local_file: Path, hdfs_dir: str = DEFAULT_HDFS_DIR) -> None:
 
     if use_docker:
         # Sprawdzamy czy plik jest zamontowany w kontenerze namenode w /workspace
+        try:
+            rel_path = local_file.resolve().relative_to(PROJECT_ROOT).as_posix()
+        except ValueError:
+            rel_path = local_file.name
+
         check_mount = subprocess.run(
-            ["docker", "exec", "namenode", "test", "-f", f"/workspace/{local_file.name}"],
+            ["docker", "exec", "namenode", "test", "-f", f"/workspace/{rel_path}"],
             capture_output=True,
         )
         if check_mount.returncode == 0:
             print(
                 f"[*] Wykryto zamontowany wolumen /workspace w kontenerze 'namenode'. "
-                f"Wysyłanie '{local_file.name}' do HDFS '{hdfs_dir}'..."
+                f"Wysyłanie '{rel_path}' do HDFS '{hdfs_dir}'..."
             )
             subprocess.run(
                 [
@@ -269,7 +277,7 @@ def upload_to_hdfs(local_file: Path, hdfs_dir: str = DEFAULT_HDFS_DIR) -> None:
                     "dfs",
                     "-put",
                     "-f",
-                    local_file.name,
+                    rel_path,
                     hdfs_dir,
                 ],
                 check=True,

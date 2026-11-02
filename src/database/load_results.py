@@ -26,8 +26,10 @@ from dotenv import load_dotenv
 from pymongo import ASCENDING, MongoClient
 from pymongo.errors import PyMongoError
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 # Wczytanie konfiguracji z pliku .env
-load_dotenv()
+load_dotenv(PROJECT_ROOT / ".env")
 
 MONGO_LOCAL_URI = os.getenv("MONGO_LOCAL_URI", "mongodb://localhost:27017/")
 MONGO_LOCAL_DB = os.getenv("MONGO_LOCAL_DB", "bigdata_local")
@@ -35,7 +37,7 @@ MONGO_LOCAL_DB = os.getenv("MONGO_LOCAL_DB", "bigdata_local")
 MONGO_ATLAS_URI = os.getenv("MONGO_ATLAS_URI") or os.getenv("MONGODB_URI", "")
 MONGO_ATLAS_DB = os.getenv("MONGO_ATLAS_DB", "bigdata_atlas")
 
-DEFAULT_RESULTS_FILE = Path("results.tsv")
+DEFAULT_RESULTS_FILE = PROJECT_ROOT / "data/output/results.tsv"
 DEFAULT_COLLECTION_NAME = "weather_results"
 
 
