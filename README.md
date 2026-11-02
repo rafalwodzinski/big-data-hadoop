@@ -132,7 +132,18 @@ Status zadania w YARN ResourceManager UI: [http://localhost:8088](http://localho
 
 ---
 
-### 9. Podstawowe komendy HDFS
+### 9. Eksport zagregowanych wyników MapReduce do MongoDB (`load_results.py`)
+
+Skrypt `load_results.py` parsuje pobrany z HDFS plik `results.tsv` do tablicy słowników i przesyła wszystkie 14 383 zagregowane rekordy stacji metodą `collection.insert_many()` do kolekcji `weather_results` w chmurze MongoDB Atlas (`bigdata_atlas.weather_results`) oraz w lokalnej bazie MongoDB (`bigdata_local.weather_results`):
+
+```bash
+conda activate bigdata_hadoop
+python load_results.py
+```
+
+---
+
+### 10. Podstawowe komendy HDFS
 
 Wykonywanie poleceń wewnątrz kontenera `namenode`:
 ```bash
