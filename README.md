@@ -109,7 +109,30 @@ cat sample.csv | python3 mapper.py | sort | python3 reducer.py
 
 ---
 
-### 8. Podstawowe komendy HDFS
+### 8. Uruchomienie zadania Hadoop Streaming na klastrze YARN (`run_mapreduce.sh`)
+
+Przetworzenie pełnego 5.5-gigabajtowego pliku `/data/gsod_full.csv` (44 splity po 128 MB) za pomocą Hadoop Streaming na klastrze YARN oraz pobranie wyników z HDFS (`/output/part-00000`) na dysk fizyczny hosta do pliku `results.tsv`:
+
+```bash
+# Uruchomienie za pomocą przygotowanego skryptu:
+bash run_mapreduce.sh
+
+# Lub bezpośrednio komendami Hadoop Streaming i HDFS:
+docker exec -w /workspace namenode hadoop jar /opt/hadoop-3.2.1/share/hadoop/tools/lib/hadoop-streaming-3.2.1.jar \
+    -files mapper.py,reducer.py \
+    -input /data/ \
+    -output /output \
+    -mapper "python3 mapper.py" \
+    -reducer "python3 reducer.py"
+
+docker exec -w /workspace namenode hdfs dfs -get -f /output/part-00000 results.tsv
+```
+
+Status zadania w YARN ResourceManager UI: [http://localhost:8088](http://localhost:8088) (`Final-State: SUCCEEDED`).
+
+---
+
+### 9. Podstawowe komendy HDFS
 
 Wykonywanie poleceń wewnątrz kontenera `namenode`:
 ```bash

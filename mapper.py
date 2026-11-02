@@ -85,7 +85,9 @@ def main() -> None:
             continue
 
         # Wypisanie pary klucz \t wartość: STN_ID \t TEMP,WIND,PRCP
-        sys.stdout.write(f"{stn_id}\t{temp:.2f},{wind:.2f},{prcp:.2f}\n")
+        sys.stdout.write(
+            "{}\t{:.2f},{:.2f},{:.2f}\n".format(stn_id, temp, wind, prcp)
+        )
 
 
 if __name__ == "__main__":

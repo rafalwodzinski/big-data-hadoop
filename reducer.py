@@ -45,10 +45,19 @@ def emit_station_stats(
 
     # Czytelny i łatwy do dalszego parsowania (np. przy eksporcie do MongoDB) format CSV po tabulatorze:
     sys.stdout.write(
-        f"{station_id}\t"
-        f"avg_temp={avg_temp:.2f},min_temp={min_temp:.2f},max_temp={max_temp:.2f},"
-        f"avg_wind={avg_wind:.2f},max_wind={max_wind:.2f},"
-        f"total_prcp={total_prcp:.2f},max_prcp={max_prcp:.2f},count={count}\n"
+        "{}\tavg_temp={:.2f},min_temp={:.2f},max_temp={:.2f},"
+        "avg_wind={:.2f},max_wind={:.2f},"
+        "total_prcp={:.2f},max_prcp={:.2f},count={}\n".format(
+            station_id,
+            avg_temp,
+            min_temp,
+            max_temp,
+            avg_wind,
+            max_wind,
+            total_prcp,
+            max_prcp,
+            count,
+        )
     )
 
 

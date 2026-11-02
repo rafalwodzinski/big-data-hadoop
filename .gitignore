@@ -45,3 +45,4 @@ atlas-credentials.env
 
 # Hadoop & Mongo local volumes/exports (if any created locally)
 *.log
+hadoop-streaming.jar
